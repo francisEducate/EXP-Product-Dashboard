@@ -283,7 +283,7 @@ const INSIGHTS = [
 /* ════════════════════════════════════════════════════════════════
    MAIN DASHBOARD
    ════════════════════════════════════════════════════════════════ */
-export default function Dashboard() {
+export default function App() {
   const [tab, setTab] = useState("health");
   const [exp, setExp] = useState(null);
   const [expD, setExpD] = useState(null);
