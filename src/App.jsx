@@ -22,37 +22,37 @@ const RAG = {
 /* ─── Shared UI ─── */
 function Badge({ s, small }) {
   const r = RAG[s] || RAG.amber;
-  return <span style={{ fontSize: small ? 9 : 11, fontWeight: 700, padding: small ? "1px 6px" : "2px 10px", borderRadius: 99, color: r.c, background: r.bg, border: `1px solid ${r.bd}`, whiteSpace: "nowrap" }}>{r.l}</span>;
+  return <span style={{ fontSize: small ? "var(--fs-xs)" : "var(--fs-sm)", fontWeight: 700, padding: small ? "1px 6px" : "2px 10px", borderRadius: 99, color: r.c, background: r.bg, border: `1px solid ${r.bd}`, whiteSpace: "nowrap" }}>{r.l}</span>;
 }
 function Bar({ pct, s }) {
   const r = RAG[s] || RAG.amber;
-  return <div style={{ height: 4, background: "#e5e7eb", borderRadius: 99, width: "100%", marginTop: 4 }}><div style={{ height: "100%", width: `${Math.min(pct, 100)}%`, background: r.c, borderRadius: 99, transition: "width 0.5s" }} /></div>;
+  return <div style={{ height: "var(--sp-xs)", background: "#e5e7eb", borderRadius: 99, width: "100%", marginTop: "var(--sp-sm)" }}><div style={{ height: "100%", width: `${Math.min(pct, 100)}%`, background: r.c, borderRadius: 99, transition: "width 0.5s" }} /></div>;
 }
 function Tag({ children, color = C.muted, bg = C.faint }) {
-  return <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 7px", borderRadius: 4, color, background: bg, letterSpacing: 0.3 }}>{children}</span>;
+  return <span style={{ fontSize: "var(--fs-xs)", fontWeight: 700, padding: "2px 7px", borderRadius: "var(--rad-sm)", color, background: bg, letterSpacing: 0.3 }}>{children}</span>;
 }
 function MetricCard({ m }) {
   return (
-    <div style={{ background: C.faint, borderRadius: 8, padding: "12px 14px", border: `1px solid ${C.line}` }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: 4 }}>
-        <span style={{ fontSize: 12, fontWeight: 700, color: C.mid }}>{m.label}</span>
+    <div style={{ background: C.faint, borderRadius: "var(--rad-md)", padding: "var(--sp-lg)", border: `1px solid ${C.line}` }} className="metric-card">
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: "var(--sp-md)", gap: "var(--sp-sm)", flexWrap: "wrap" }} className="metric-header">
+        <span style={{ fontSize: "var(--fs-sm)", fontWeight: 700, color: C.mid }} className="metric-label">{m.label}</span>
         <Badge s={m.status} small />
       </div>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 2 }}>
-        <span style={{ fontSize: 20, fontWeight: 800, color: C.dark }}>{m.value}</span>
-        <span style={{ fontSize: 11, color: C.light }}>target: {m.target}</span>
+      <div style={{ display: "flex", alignItems: "baseline", gap: "var(--sp-sm)", marginBottom: "var(--sp-md)", flexWrap: "wrap" }} className="metric-value">
+        <span style={{ fontSize: "var(--fs-xl)", fontWeight: 800, color: C.dark }} className="metric-value-main">{m.value}</span>
+        <span style={{ fontSize: "var(--fs-xs)", color: C.light }} className="metric-value-target">target: {m.target}</span>
       </div>
       {m.pct > 0 && <Bar pct={m.pct} s={m.status} />}
-      <div style={{ fontSize: 11, color: C.muted, marginTop: 6, lineHeight: 1.5 }}>{m.note}</div>
-      {m.source && <div style={{ fontSize: 10, color: C.b, marginTop: 4, fontWeight: 600 }}>Source: {m.source}</div>}
+      <div style={{ fontSize: "var(--fs-xs)", color: C.muted, marginTop: "var(--sp-md)", lineHeight: 1.5 }} className="metric-note">{m.note}</div>
+      {m.source && <div style={{ fontSize: "var(--fs-xs)", color: C.b, marginTop: "var(--sp-sm)", fontWeight: 600 }} className="metric-source">Source: {m.source}</div>}
     </div>
   );
 }
 function DiagBox({ title, text, color = "#854d0e", bg = "#fefce8", bd = "#fef08a" }) {
   return (
-    <div style={{ background: bg, border: `1px solid ${bd}`, borderRadius: 8, padding: "14px 16px", marginBottom: 12 }}>
-      <div style={{ fontSize: 11, fontWeight: 800, color, textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 6 }}>{title}</div>
-      <div style={{ fontSize: 13, color, lineHeight: 1.6 }}>{text}</div>
+    <div style={{ background: bg, border: `1px solid ${bd}`, borderRadius: "var(--rad-lg)", padding: "var(--sp-lg)", marginBottom: "var(--sp-lg)" }} className="info-box">
+      <div style={{ fontSize: "var(--fs-xs)", fontWeight: 800, color, textTransform: "uppercase", letterSpacing: 0.8, marginBottom: "var(--sp-md)" }} className="info-box-title">{title}</div>
+      <div style={{ fontSize: "var(--fs-sm)", color, lineHeight: 1.6 }} className="info-box-text">{text}</div>
     </div>
   );
 }
@@ -296,86 +296,88 @@ export default function Dashboard() {
   ];
 
   return (
-    <div style={{ fontFamily: "'DM Sans', 'Segoe UI', system-ui, sans-serif", background: C.bg, minHeight: "100vh", color: C.dark }}>
+    <div style={{ fontFamily: "'DM Sans', 'Segoe UI', system-ui, sans-serif", background: C.bg, minHeight: "100vh", color: C.dark }} className="dashboard-wrapper">
 
       {/* Header */}
-      <div style={{ background: C.dark, padding: "16px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ background: C.dark, display: "flex", justifyContent: "space-between", alignItems: "center" }} className="dashboard-header">
         <div>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2.5, color: C.light, textTransform: "uppercase" }}>Educate! EXP</div>
-          <div style={{ fontSize: 20, fontWeight: 800, color: "#fff", letterSpacing: -0.3 }}>Product Dashboard · 2026</div>
+          <div className="header-title-label">Educate! EXP</div>
+          <div className="header-title-main">Product Dashboard · 2026</div>
         </div>
-        <div style={{ textAlign: "right", fontSize: 11, color: C.light }}>
+        <div style={{ lineHeight: 1.6 }} className="header-meta">
           <div>End of Term 1, 2026</div>
-          <div style={{ color: C.muted }}>36,664 scholars · 825 schools · 5 regions · 780 mentors</div>
+          <div className="header-meta-secondary">36,664 scholars · 825 schools · 5 regions · 780 mentors</div>
         </div>
       </div>
 
       {/* Experiment Status Card (always visible) */}
-      <div style={{ background: C.pBg, borderBottom: `1px solid ${C.pBd}`, padding: "8px 28px", display: "flex", alignItems: "center", gap: 16, fontSize: 12 }}>
-        <span style={{ fontWeight: 700, color: C.p }}>◇ Experiments</span>
-        <span style={{ color: C.mid }}>Growth Mindset: <strong>In field</strong> (RCT launched, midline T2 Wk 5)</span>
-        <span style={{ color: C.line }}>|</span>
-        <span style={{ color: C.mid }}>Passbook BML: <strong>T1 complete</strong> (T2 field visits planned)</span>
-        <span style={{ color: C.line }}>|</span>
-        <span style={{ color: C.muted, fontStyle: "italic" }}>No integration decisions pending</span>
+      <div style={{ background: C.pBg, borderBottom: `1px solid ${C.pBd}`, color: C.mid, fontSize: "var(--fs-sm)" }} className="status-bar">
+        <div className="status-item">
+          <span style={{ fontWeight: 700, color: C.p }}>◇ Experiments</span>
+          <span>Growth Mindset: <strong>In field</strong> (RCT launched, midline T2 Wk 5)</span>
+        </div>
+        <span className="status-divider">|</span>
+        <div className="status-item">
+          <span>Passbook BML: <strong>T1 complete</strong> (T2 field visits planned)</span>
+        </div>
+        <span className="status-divider">|</span>
+        <div className="status-item">
+          <span style={{ color: C.muted, fontStyle: "italic" }}>No integration decisions pending</span>
+        </div>
       </div>
 
       {/* Tabs */}
-      <div style={{ background: "#fff", borderBottom: `1px solid ${C.line}`, padding: "0 28px", display: "flex" }}>
+      <div style={{ background: "#fff", borderBottom: `1px solid ${C.line}` }} className="tabs-nav">
         {tabs.map(t => (
-          <button key={t.k} onClick={() => { setTab(t.k); setExp(null); setExpD(null); }} style={{
-            background: "transparent", border: "none", borderBottom: tab === t.k ? `3px solid ${C.dark}` : "3px solid transparent",
-            padding: "12px 18px", fontSize: 13, fontWeight: tab === t.k ? 800 : 500,
-            color: tab === t.k ? C.dark : C.muted, cursor: "pointer", display: "flex", alignItems: "center", gap: 5,
-          }}>
-            <span style={{ fontSize: 13 }}>{t.i}</span> {t.l}
+          <button key={t.k} onClick={() => { setTab(t.k); setExp(null); setExpD(null); }} className={`tab-button ${tab === t.k ? 'active' : ''}`}>
+            <span>{t.i}</span> {t.l}
           </button>
         ))}
       </div>
 
-      <div style={{ padding: "20px 28px", maxWidth: 1100, margin: "0 auto" }}>
+      <div className="dashboard-container">
 
         {/* ════════ PRODUCT HEALTH ════════ */}
         {tab === "health" && DIMS.map(dim => {
           const isExp = exp === dim.id;
           return (
-            <div key={dim.id} style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: 12, marginBottom: 10, overflow: "hidden" }}>
-              <div onClick={() => setExp(isExp ? null : dim.id)} style={{ padding: "14px 18px", cursor: "pointer", display: "flex", alignItems: "center", gap: 14 }}>
-                <div style={{ width: 38, height: 38, borderRadius: 10, background: RAG[dim.status].bg, border: `1px solid ${RAG[dim.status].bd}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, flexShrink: 0 }}>{dim.icon}</div>
+            <div key={dim.id} style={{ background: C.card, border: `1px solid ${C.line}` }} className="card">
+              <div onClick={() => setExp(isExp ? null : dim.id)} style={{ padding: "var(--sp-lg)", cursor: "pointer", display: "flex", alignItems: "center", gap: "var(--sp-md)" }} className="card-header">
+                <div style={{ background: `${RAG[dim.status].bg}`, border: `1px solid ${RAG[dim.status].bd}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "clamp(1.25rem, 3vw, 1.75rem)" }} className="card-icon">{dim.icon}</div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 1 }}>
-                    <span style={{ fontSize: 14, fontWeight: 800 }}>{dim.title}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "var(--sp-sm)", marginBottom: 1, flexWrap: "wrap" }}>
+                    <span style={{ fontSize: "var(--fs-lg)", fontWeight: 800 }}>{dim.title}</span>
                     <Badge s={dim.status} />
                   </div>
-                  <div style={{ fontSize: 11, color: C.muted }}>{dim.note}</div>
+                  <div style={{ fontSize: "var(--fs-xs)", color: C.muted }}>{dim.note}</div>
                 </div>
                 <div style={{ textAlign: "right", marginRight: 6 }}>
-                  <div style={{ fontSize: 10, fontWeight: 600, color: C.light, textTransform: "uppercase", letterSpacing: 0.4 }}>{dim.top.label}</div>
-                  <div style={{ fontSize: 18, fontWeight: 800, color: RAG[dim.top.status].c }}>{dim.top.value}</div>
-                  <div style={{ fontSize: 10, color: C.light }}>{dim.top.target}</div>
+                  <div style={{ fontSize: "var(--fs-xs)", fontWeight: 600, color: C.light, textTransform: "uppercase", letterSpacing: 0.4 }}>{dim.top.label}</div>
+                  <div style={{ fontSize: "var(--fs-xl)", fontWeight: 800, color: RAG[dim.top.status].c }}>{dim.top.value}</div>
+                  <div style={{ fontSize: "var(--fs-xs)", color: C.light }}>{dim.top.target}</div>
                 </div>
-                <div style={{ fontSize: 16, color: C.light, transition: "transform 0.2s", transform: isExp ? "rotate(180deg)" : "" }}>▾</div>
+                <div style={{ fontSize: "var(--fs-lg)", color: C.light, transition: "transform 0.2s", transform: isExp ? "rotate(180deg)" : "" }}>▾</div>
               </div>
 
               {isExp && (
-                <div style={{ borderTop: `1px solid ${C.line}`, padding: "18px" }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: C.muted, marginBottom: 2 }}>{dim.q}</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginTop: 12, marginBottom: 16 }}>
+                <div style={{ borderTop: `1px solid ${C.line}}` }} className="card-content">
+                  <div style={{ fontSize: "var(--fs-sm)", fontWeight: 700, color: C.muted, marginBottom: 2 }}>{dim.q}</div>
+                  <div style={{ marginTop: "var(--sp-lg)", marginBottom: "var(--sp-xl)" }} className="grid grid-3">
                     {dim.metrics.map((m, i) => <MetricCard key={i} m={m} />)}
                   </div>
 
                   {/* Transformation arc (PMF only) */}
                   {dim.transformation && (
-                    <div style={{ marginBottom: 16 }}>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>Evidence of Transformation</div>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+                    <div style={{ marginBottom: "var(--sp-xl)" }}>
+                      <div style={{ fontSize: "var(--fs-xs)", fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: "var(--sp-md)" }}>Evidence of Transformation</div>
+                      <div style={{ marginBottom: "var(--sp-xl)" }} className="grid grid-3">
                         {dim.transformation.map((t, i) => (
-                          <div key={i} style={{ background: RAG[t.status].bg, border: `1px solid ${RAG[t.status].bd}`, borderRadius: 8, padding: "10px 12px" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                              <span style={{ fontSize: 11, fontWeight: 700, color: C.mid }}>{t.label}</span>
-                              <span style={{ fontSize: 14, fontWeight: 800, color: RAG[t.status].c }}>{t.value}</span>
+                          <div key={i} style={{ background: RAG[t.status].bg, border: `1px solid ${RAG[t.status].bd}`, borderRadius: "var(--rad-lg)", padding: "var(--sp-lg)" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "var(--sp-sm)", flexWrap: "wrap", gap: "var(--sp-sm)" }}>
+                              <span style={{ fontSize: "var(--fs-sm)", fontWeight: 700, color: C.mid }}>{t.label}</span>
+                              <span style={{ fontSize: "var(--fs-xl)", fontWeight: 800, color: RAG[t.status].c }}>{t.value}</span>
                             </div>
-                            <div style={{ fontSize: 11, color: C.muted, lineHeight: 1.4 }}>{t.note}</div>
+                            <div style={{ fontSize: "var(--fs-sm)", color: C.muted, lineHeight: 1.4 }}>{t.note}</div>
                           </div>
                         ))}
                       </div>
@@ -384,21 +386,21 @@ export default function Dashboard() {
 
                   {/* Regional disagg (Team Culture) */}
                   {dim.regional && (
-                    <div style={{ marginBottom: 16 }}>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>Regional View</div>
-                      <div style={{ background: C.faint, borderRadius: 8, overflow: "hidden", border: `1px solid ${C.line}` }}>
-                        <div style={{ display: "grid", gridTemplateColumns: "90px 1fr 1fr 1fr 1fr", gap: 0, padding: "6px 12px", borderBottom: `1px solid ${C.line}` }}>
+                    <div style={{ marginBottom: "var(--sp-xl)" }}>
+                      <div style={{ fontSize: "var(--fs-xs)", fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: "var(--sp-md)" }}>Regional View</div>
+                      <div style={{ background: C.faint, borderRadius: "var(--rad-lg)", overflow: "hidden", border: `1px solid ${C.line}` }} className="table-responsive">
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", gap: 0, padding: "var(--sp-md)", borderBottom: `1px solid ${C.line}` }} className="table-header">
                           {["Region", "Mentor Culture", "Hallmark", "Patron Sat.", "Note"].map(h => (
-                            <span key={h} style={{ fontSize: 10, fontWeight: 700, color: C.light, textTransform: "uppercase" }}>{h}</span>
+                            <span key={h}>{h}</span>
                           ))}
                         </div>
                         {dim.regional.map((r, i) => (
-                          <div key={i} style={{ display: "grid", gridTemplateColumns: "90px 1fr 1fr 1fr 1fr", gap: 0, padding: "8px 12px", borderBottom: i < dim.regional.length - 1 ? `1px solid ${C.line}` : "none", background: i % 2 ? C.faint : "#fff" }}>
-                            <span style={{ fontSize: 12, fontWeight: 700, color: C.dark }}>{r.region}</span>
-                            <span style={{ fontSize: 12, color: C.mid }}>{r.mentorCulture}</span>
-                            <span style={{ fontSize: 12, color: C.mid }}>{r.hallmark}</span>
-                            <span style={{ fontSize: 12, color: C.mid }}>{r.patronSat}</span>
-                            <span style={{ fontSize: 11, color: C.muted }}>{r.note}</span>
+                          <div key={i} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", gap: 0, padding: "var(--sp-md)", borderBottom: i < dim.regional.length - 1 ? `1px solid ${C.line}` : "none", background: i % 2 ? C.faint : "#fff" }} className="table-row">
+                            <span style={{ fontSize: "var(--fs-sm)", fontWeight: 700, color: C.dark }}>{r.region}</span>
+                            <span style={{ fontSize: "var(--fs-sm)", color: C.mid }}>{r.mentorCulture}</span>
+                            <span style={{ fontSize: "var(--fs-sm)", color: C.mid }}>{r.hallmark}</span>
+                            <span style={{ fontSize: "var(--fs-sm)", color: C.mid }}>{r.patronSat}</span>
+                            <span style={{ fontSize: "var(--fs-xs)", color: C.muted }}>{r.note}</span>
                           </div>
                         ))}
                       </div>
@@ -406,15 +408,15 @@ export default function Dashboard() {
                   )}
 
                   <DiagBox title="Diagnostic Read" text={dim.diag} />
-                  <div style={{ display: "flex", gap: 10 }}>
-                    <div style={{ background: C.bBg, border: `1px solid ${C.bBd}`, borderRadius: 8, padding: "12px 14px", flex: 1 }}>
-                      <div style={{ fontSize: 11, fontWeight: 800, color: C.b, marginBottom: 3 }}>Key Insight</div>
-                      <div style={{ fontSize: 12, color: "#1e3a5f", lineHeight: 1.5 }}>{dim.insight}</div>
+                  <div style={{ display: "flex", gap: "var(--sp-md)", marginTop: "var(--sp-lg)", flexWrap: "wrap" }}>
+                    <div style={{ background: C.bBg, border: `1px solid ${C.bBd}`, borderRadius: "var(--rad-lg)", padding: "var(--sp-lg)", flex: "1 1 250px" }}>
+                      <div style={{ fontSize: "var(--fs-xs)", fontWeight: 800, color: C.b, marginBottom: "var(--sp-sm)" }}>Key Insight</div>
+                      <div style={{ fontSize: "var(--fs-sm)", color: "#1e3a5f", lineHeight: 1.5 }}>{dim.insight}</div>
                     </div>
                     {dim.assumptions.length > 0 && (
-                      <div style={{ background: C.faint, borderRadius: 8, padding: "12px 14px", minWidth: 140 }}>
-                        <div style={{ fontSize: 10, fontWeight: 700, color: C.light, textTransform: "uppercase", marginBottom: 4 }}>Tests Assumptions</div>
-                        <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>{dim.assumptions.map(a => <Tag key={a}>{a}</Tag>)}</div>
+                      <div style={{ background: C.faint, borderRadius: "var(--rad-lg)", padding: "var(--sp-lg)", minWidth: 140 }}>
+                        <div style={{ fontSize: "var(--fs-xs)", fontWeight: 700, color: C.light, textTransform: "uppercase", marginBottom: "var(--sp-sm)" }}>Tests Assumptions</div>
+                        <div style={{ display: "flex", gap: "var(--sp-sm)", flexWrap: "wrap" }}>{dim.assumptions.map(a => <Tag key={a}>{a}</Tag>)}</div>
                       </div>
                     )}
                   </div>
@@ -426,26 +428,26 @@ export default function Dashboard() {
 
         {/* ════════ 2026 STRATEGY ════════ */}
         {tab === "strategy" && STRAT.map((obj, oi) => (
-          <div key={oi} style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 13, fontWeight: 800, color: C.dark, padding: "10px 14px", background: C.faint, borderRadius: "10px 10px 0 0", border: `1px solid ${C.line}`, borderBottom: "none" }}>{obj.obj}</div>
-            <div style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: "0 0 10px 10px" }}>
+          <div key={oi} style={{ marginBottom: "var(--sp-xl)" }}>
+            <div style={{ fontSize: "var(--fs-sm)", fontWeight: 800, color: C.dark, padding: "var(--sp-lg)", background: C.faint, borderRadius: "var(--rad-lg) var(--rad-lg) 0 0", border: `1px solid ${C.line}`, borderBottom: "none" }}>{obj.obj}</div>
+            <div style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: "0 0 var(--rad-lg) var(--rad-lg)" }}>
               {obj.krs.map((kr, ki) => (
-                <div key={ki} style={{ padding: "14px 18px", borderBottom: ki < obj.krs.length - 1 ? `1px solid ${C.line}` : "none" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, fontWeight: 700, color: C.muted }}>{kr.id}</span>
+                <div key={ki} style={{ padding: "var(--sp-lg)", borderBottom: ki < obj.krs.length - 1 ? `1px solid ${C.line}` : "none" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "var(--sp-sm)", marginBottom: "var(--sp-md)", flexWrap: "wrap" }}>
+                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "var(--fs-xs)", fontWeight: 700, color: C.muted }}>{kr.id}</span>
                     <Badge s={kr.status} />
-                    <span style={{ fontSize: 13, fontWeight: 600, color: C.dark }}>{kr.label}</span>
+                    <span style={{ fontSize: "var(--fs-sm)", fontWeight: 600, color: C.dark }}>{kr.label}</span>
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginTop: 8 }}>
+                  <div style={{ marginTop: "var(--sp-md)" }} className="grid grid-2">
                     {[{ h: "Current", v: kr.current }, { h: "Mid-point Target", v: kr.mid }, { h: "End-point Target", v: kr.end }].map((c, ci) => (
-                      <div key={ci} style={{ background: C.faint, borderRadius: 6, padding: "8px 10px" }}>
-                        <div style={{ fontSize: 10, fontWeight: 700, color: C.light, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 2 }}>{c.h}</div>
-                        <div style={{ fontSize: 12, color: C.dark, lineHeight: 1.4 }}>{c.v}</div>
+                      <div key={ci} style={{ background: C.faint, borderRadius: "var(--rad-md)", padding: "var(--sp-lg)" }}>
+                        <div style={{ fontSize: "var(--fs-xs)", fontWeight: 700, color: C.light, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: "var(--sp-sm)" }}>{c.h}</div>
+                        <div style={{ fontSize: "var(--fs-sm)", color: C.dark, lineHeight: 1.4 }}>{c.v}</div>
                       </div>
                     ))}
                   </div>
-                  <div style={{ fontSize: 11, color: C.muted, marginTop: 6, lineHeight: 1.4, fontStyle: "italic" }}>{kr.note}</div>
-                  <div style={{ fontSize: 10, color: C.b, marginTop: 2, fontWeight: 600 }}>Source: {kr.source}</div>
+                  <div style={{ fontSize: "var(--fs-xs)", color: C.muted, marginTop: "var(--sp-md)", lineHeight: 1.4, fontStyle: "italic" }}>{kr.note}</div>
+                  <div style={{ fontSize: "var(--fs-xs)", color: C.b, marginTop: "var(--sp-sm)", fontWeight: 600 }}>Source: {kr.source}</div>
                 </div>
               ))}
             </div>
@@ -455,46 +457,46 @@ export default function Dashboard() {
         {/* ════════ EXPERIMENTS ════════ */}
         {tab === "experiments" && (
           <div>
-            <div style={{ fontSize: 13, color: C.muted, marginBottom: 16, lineHeight: 1.6, maxWidth: 750 }}>
+            <div style={{ fontSize: "var(--fs-sm)", color: C.muted, marginBottom: "var(--sp-xl)", lineHeight: 1.6, maxWidth: 750 }}>
               The two highest-priority learning activities in 2026. These test the existential assumptions — if they succeed, the strategy is validated. Each experiment shows what it is, why it matters, design, success criteria, failure criteria, and path to integration.
             </div>
             {EXPS.map(e => {
               const isOpen = expD === e.id;
               return (
-                <div key={e.id} style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: 12, marginBottom: 14, overflow: "hidden" }}>
-                  <div onClick={() => setExpD(isOpen ? null : e.id)} style={{ padding: "16px 18px", cursor: "pointer", display: "flex", alignItems: "start", gap: 12 }}>
-                    <div style={{ width: 42, height: 42, borderRadius: 10, background: C.pBg, border: `1px solid ${C.pBd}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>◇</div>
+                <div key={e.id} style={{ background: C.card, border: `1px solid ${C.line}` }} className="card">
+                  <div onClick={() => setExpD(isOpen ? null : e.id)} style={{ padding: "var(--sp-lg)", cursor: "pointer", display: "flex", alignItems: "start", gap: "var(--sp-md)" }} className="card-header">
+                    <div style={{ background: C.pBg, border: `1px solid ${C.pBd}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "var(--fs-xl)", flexShrink: 0 }} className="card-icon">◇</div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 15, fontWeight: 800, color: C.dark }}>{e.title}</div>
-                      <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{e.what}</div>
+                      <div style={{ fontSize: "var(--fs-lg)", fontWeight: 800, color: C.dark }}>{e.title}</div>
+                      <div style={{ fontSize: "var(--fs-sm)", color: C.muted, marginTop: "var(--sp-sm)" }}>{e.what}</div>
                     </div>
-                    <div style={{ fontSize: 16, color: C.light, transform: isOpen ? "rotate(180deg)" : "", transition: "transform 0.2s" }}>▾</div>
+                    <div style={{ fontSize: "var(--fs-lg)", color: C.light, transform: isOpen ? "rotate(180deg)" : "", transition: "transform 0.2s" }}>▾</div>
                   </div>
 
                   {isOpen && (
-                    <div style={{ borderTop: `1px solid ${C.line}`, padding: "18px" }}>
+                    <div style={{ borderTop: `1px solid ${C.line}` }} className="card-content">
                       {/* Why */}
                       <DiagBox title="Why This Experiment" text={e.why} color="#4c1d95" bg={C.pBg} bd={C.pBd} />
 
                       {/* Assumptions */}
-                      <div style={{ marginBottom: 14 }}>
-                        <div style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 6 }}>Assumptions Being Tested</div>
-                        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>{e.assumptions.map((a, i) => <Tag key={i} color={C.p} bg={C.pBg}>{a}</Tag>)}</div>
+                      <div style={{ marginBottom: "var(--sp-lg)" }}>
+                        <div style={{ fontSize: "var(--fs-xs)", fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: 0.8, marginBottom: "var(--sp-md)" }}>Assumptions Being Tested</div>
+                        <div style={{ display: "flex", gap: "var(--sp-sm)", flexWrap: "wrap" }}>{e.assumptions.map((a, i) => <Tag key={i} color={C.p} bg={C.pBg}>{a}</Tag>)}</div>
                       </div>
 
                       {/* Design */}
-                      <div style={{ background: C.faint, borderRadius: 8, padding: "12px 14px", marginBottom: 14, border: `1px solid ${C.line}` }}>
-                        <div style={{ fontSize: 11, fontWeight: 700, color: C.muted, marginBottom: 3 }}>Design</div>
-                        <div style={{ fontSize: 12, color: C.mid, lineHeight: 1.5 }}>{e.design}</div>
+                      <div style={{ background: C.faint, borderRadius: "var(--rad-lg)", padding: "var(--sp-lg)", marginBottom: "var(--sp-lg)", border: `1px solid ${C.line}` }} className="info-box">
+                        <div style={{ fontSize: "var(--fs-sm)", fontWeight: 700, color: C.muted, marginBottom: "var(--sp-md)" }}>Design</div>
+                        <div style={{ fontSize: "var(--fs-sm)", color: C.mid, lineHeight: 1.5 }}>{e.design}</div>
                       </div>
 
                       {/* Success Criteria */}
-                      <div style={{ marginBottom: 14 }}>
-                        <div style={{ fontSize: 11, fontWeight: 800, color: C.g, textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 6 }}>Success Criteria</div>
+                      <div style={{ marginBottom: "var(--sp-lg)" }}>
+                        <div style={{ fontSize: "var(--fs-xs)", fontWeight: 800, color: C.g, textTransform: "uppercase", letterSpacing: 0.8, marginBottom: "var(--sp-md)" }}>Success Criteria</div>
                         {e.success.map((s, i) => (
-                          <div key={i} style={{ background: C.gBg, border: `1px solid ${C.gBd}`, borderRadius: 6, padding: "8px 12px", marginBottom: 4, display: "flex", justifyContent: "space-between", alignItems: "start", gap: 12 }}>
-                            <span style={{ fontSize: 12, color: "#14532d", flex: 1 }}>{s.criterion}</span>
-                            <span style={{ fontSize: 11, fontWeight: 700, color: C.g, whiteSpace: "nowrap" }}>{s.threshold}</span>
+                          <div key={i} style={{ background: C.gBg, border: `1px solid ${C.gBd}`, borderRadius: "var(--rad-md)", padding: "var(--sp-lg)", marginBottom: "var(--sp-sm)", display: "flex", justifyContent: "space-between", alignItems: "start", gap: "var(--sp-md)", flexWrap: "wrap" }}>
+                            <span style={{ fontSize: "var(--fs-sm)", color: "#14532d", flex: 1 }}>{s.criterion}</span>
+                            <span style={{ fontSize: "var(--fs-sm)", fontWeight: 700, color: C.g, whiteSpace: "nowrap" }}>{s.threshold}</span>
                           </div>
                         ))}
                       </div>
@@ -506,31 +508,31 @@ export default function Dashboard() {
                       <DiagBox title="Path to Integration" text={e.integration} color="#1e40af" bg={C.bBg} bd={C.bBd} />
 
                       {/* Timeline */}
-                      <div style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8, marginTop: 14 }}>Timeline</div>
+                      <div style={{ fontSize: "var(--fs-xs)", fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: "var(--sp-md)", marginTop: "var(--sp-xl)" }}>Timeline</div>
                       {e.timeline.map((n, i) => (
-                        <div key={i} style={{ display: "flex", gap: 10, marginBottom: 8 }}>
+                        <div key={i} style={{ display: "flex", gap: "var(--sp-md)", marginBottom: "var(--sp-md)" }}>
                           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 12, flexShrink: 0 }}>
                             <div style={{ width: 10, height: 10, borderRadius: 99, background: n.s === "done" ? C.g : n.s === "active" ? C.a : C.line, border: `2px solid ${n.s === "done" ? C.g : n.s === "active" ? C.a : "#d1d5db"}` }} />
                             {i < e.timeline.length - 1 && <div style={{ width: 2, flex: 1, background: C.line, marginTop: 2 }} />}
                           </div>
                           <div style={{ flex: 1 }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                              <span style={{ fontSize: 12, fontWeight: 700, color: C.dark }}>{n.phase}</span>
-                              <span style={{ fontSize: 10, color: C.light }}>{n.period}</span>
+                            <div style={{ display: "flex", alignItems: "center", gap: "var(--sp-sm)", flexWrap: "wrap" }}>
+                              <span style={{ fontSize: "var(--fs-sm)", fontWeight: 700, color: C.dark }}>{n.phase}</span>
+                              <span style={{ fontSize: "var(--fs-xs)", color: C.light }}>{n.period}</span>
                               <Tag color={n.s === "done" ? C.g : n.s === "active" ? C.a : C.light} bg={n.s === "done" ? C.gBg : n.s === "active" ? C.aBg : C.faint}>{n.s === "done" ? "Complete" : n.s === "active" ? "Active" : "Upcoming"}</Tag>
                             </div>
-                            <div style={{ fontSize: 11, color: C.muted, lineHeight: 1.4, marginTop: 1 }}>{n.detail}</div>
+                            <div style={{ fontSize: "var(--fs-sm)", color: C.muted, lineHeight: 1.4, marginTop: "var(--sp-sm)" }}>{n.detail}</div>
                           </div>
                         </div>
                       ))}
 
                       {/* Findings */}
-                      <div style={{ fontSize: 11, fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8, marginTop: 14 }}>Findings So Far</div>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                      <div style={{ fontSize: "var(--fs-xs)", fontWeight: 800, color: C.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: "var(--sp-md)", marginTop: "var(--sp-xl)" }}>Findings So Far</div>
+                      <div style={{ marginBottom: "var(--sp-xl)" }} className="grid grid-2">
                         {e.findings.map((f, i) => (
-                          <div key={i} style={{ background: f.type === "+" ? C.gBg : C.aBg, border: `1px solid ${f.type === "+" ? C.gBd : C.aBd}`, borderRadius: 6, padding: "8px 10px" }}>
-                            <div style={{ fontSize: 10, fontWeight: 700, color: f.type === "+" ? C.g : C.a, textTransform: "uppercase", marginBottom: 2 }}>{f.type === "+" ? "◉ Positive" : "▲ Risk"}</div>
-                            <div style={{ fontSize: 11, color: C.mid, lineHeight: 1.4 }}>{f.text}</div>
+                          <div key={i} style={{ background: f.type === "+" ? C.gBg : C.aBg, border: `1px solid ${f.type === "+" ? C.gBd : C.aBd}`, borderRadius: "var(--rad-md)", padding: "var(--sp-lg)" }}>
+                            <div style={{ fontSize: "var(--fs-xs)", fontWeight: 700, color: f.type === "+" ? C.g : C.a, textTransform: "uppercase", marginBottom: "var(--sp-sm)" }}>{f.type === "+" ? "◉ Positive" : "▲ Risk"}</div>
+                            <div style={{ fontSize: "var(--fs-sm)", color: C.mid, lineHeight: 1.4 }}>{f.text}</div>
                           </div>
                         ))}
                       </div>
@@ -546,45 +548,47 @@ export default function Dashboard() {
         {tab === "assumptions" && (
           <div>
             {/* Summary cards */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 20 }}>
+            <div style={{ marginBottom: "var(--sp-xl)" }} className="grid grid-4">
               {[
                 { l: "Validated", n: ASMS.filter(a => a.v).length, c: C.g, bg: C.gBg },
                 { l: "In Progress", n: ASMS.filter(a => !a.v && a.c !== "Low").length, c: C.a, bg: C.aBg },
                 { l: "Not Yet Tested", n: ASMS.filter(a => a.c === "Low").length, c: C.r, bg: C.rBg },
                 { l: "Emerging Questions", n: EQS.length, c: C.b, bg: C.bBg },
               ].map((s, i) => (
-                <div key={i} style={{ background: s.bg, borderRadius: 10, padding: "12px 14px", textAlign: "center" }}>
-                  <div style={{ fontSize: 26, fontWeight: 800, color: s.c }}>{s.n}</div>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: s.c }}>{s.l}</div>
+                <div key={i} style={{ background: s.bg, borderRadius: "var(--rad-lg)", padding: "var(--sp-lg)", textAlign: "center" }}>
+                  <div style={{ fontSize: "var(--fs-2xl)", fontWeight: 800, color: s.c }}>{s.n}</div>
+                  <div style={{ fontSize: "var(--fs-xs)", fontWeight: 600, color: s.c }}>{s.l}</div>
                 </div>
               ))}
             </div>
 
             {/* Full list */}
-            <div style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: 10, marginBottom: 20, overflow: "hidden" }}>
-              <div style={{ padding: "10px 14px", borderBottom: `1px solid ${C.line}`, background: C.faint }}>
-                <span style={{ fontSize: 12, fontWeight: 800 }}>All Product Assumptions</span>
+            <div style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: "var(--rad-lg)", marginBottom: "var(--sp-xl)", overflow: "hidden" }}>
+              <div style={{ padding: "var(--sp-md)", borderBottom: `1px solid ${C.line}`, background: C.faint }}>
+                <span style={{ fontSize: "var(--fs-sm)", fontWeight: 800 }}>All Product Assumptions</span>
               </div>
               {ASMS.map((a, i) => (
-                <div key={a.id} style={{ display: "grid", gridTemplateColumns: "44px 1fr 75px 65px", gap: 8, padding: "8px 14px", alignItems: "center", borderBottom: i < ASMS.length - 1 ? `1px solid ${C.line}` : "none" }}>
-                  <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, fontWeight: 700, color: C.muted }}>{a.id}</span>
-                  <div>
-                    <div style={{ fontSize: 12, fontWeight: 600, color: C.dark, lineHeight: 1.3 }}>{a.l}</div>
-                    <div style={{ fontSize: 10, color: C.light, marginTop: 1 }}>{a.ev}</div>
+                <div key={a.id} style={{ display: "grid", gridTemplateColumns: "1fr", gap: "var(--sp-sm)", padding: "var(--sp-lg)", alignItems: "center", borderBottom: i < ASMS.length - 1 ? `1px solid ${C.line}` : "none" }} className="grid">
+                  <div style={{ display: "flex", alignItems: "start", gap: "var(--sp-md)", flexWrap: "wrap" }}>
+                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "var(--fs-xs)", fontWeight: 700, color: C.muted, minWidth: 44 }}>{a.id}</span>
+                    <div style={{ flex: 1, minWidth: 200 }}>
+                      <div style={{ fontSize: "var(--fs-sm)", fontWeight: 600, color: C.dark, lineHeight: 1.3 }}>{a.l}</div>
+                      <div style={{ fontSize: "var(--fs-xs)", color: C.light, marginTop: "var(--sp-sm)" }}>{a.ev}</div>
+                    </div>
+                    <span style={{ fontSize: "var(--fs-xs)", fontWeight: 700, padding: "2px 7px", borderRadius: 99, textAlign: "center", color: a.c === "High" ? C.g : a.c === "Medium" ? C.a : C.r, background: a.c === "High" ? C.gBg : a.c === "Medium" ? C.aBg : C.rBg }}>{a.c}</span>
+                    {a.v ? <span style={{ fontSize: "var(--fs-xs)", fontWeight: 700, color: C.g }}>✓ Validated</span> : <span style={{ fontSize: "var(--fs-xs)", color: C.light }}>○ Testing</span>}
                   </div>
-                  <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 7px", borderRadius: 99, textAlign: "center", color: a.c === "High" ? C.g : a.c === "Medium" ? C.a : C.r, background: a.c === "High" ? C.gBg : a.c === "Medium" ? C.aBg : C.rBg }}>{a.c}</span>
-                  {a.v ? <span style={{ fontSize: 10, fontWeight: 700, color: C.g }}>✓ Validated</span> : <span style={{ fontSize: 10, color: C.light }}>○ Testing</span>}
                 </div>
               ))}
             </div>
 
             {/* Emerging Questions */}
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 13, fontWeight: 800, marginBottom: 8 }}>Emerging Questions</div>
+            <div style={{ marginBottom: "var(--sp-xl)" }}>
+              <div style={{ fontSize: "var(--fs-lg)", fontWeight: 800, marginBottom: "var(--sp-lg)" }}>Emerging Questions</div>
               {EQS.map((eq, i) => (
-                <div key={i} style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: 8, padding: "10px 14px", marginBottom: 6 }}>
-                  <div style={{ fontSize: 13, color: C.dark, lineHeight: 1.5, fontWeight: 500 }}>{eq.q}</div>
-                  <div style={{ display: "flex", gap: 6, marginTop: 4 }}>
+                <div key={i} style={{ background: C.card, border: `1px solid ${C.line}`, borderRadius: "var(--rad-lg)", padding: "var(--sp-lg)", marginBottom: "var(--sp-md)" }}>
+                  <div style={{ fontSize: "var(--fs-sm)", color: C.dark, lineHeight: 1.5, fontWeight: 500 }}>{eq.q}</div>
+                  <div style={{ display: "flex", gap: "var(--sp-sm)", marginTop: "var(--sp-md)", flexWrap: "wrap" }}>
                     <Tag color={eq.pr === "High" ? C.r : C.a} bg={eq.pr === "High" ? C.rBg : C.aBg}>{eq.pr}</Tag>
                     <Tag>{eq.src}</Tag>
                   </div>
@@ -594,11 +598,11 @@ export default function Dashboard() {
 
             {/* Key Insights */}
             <div>
-              <div style={{ fontSize: 13, fontWeight: 800, marginBottom: 8 }}>What We've Learned</div>
+              <div style={{ fontSize: "var(--fs-lg)", fontWeight: 800, marginBottom: "var(--sp-lg)" }}>What We've Learned</div>
               {INSIGHTS.map((ins, i) => (
-                <div key={i} style={{ background: C.bBg, border: `1px solid ${C.bBd}`, borderRadius: 8, padding: "12px 14px", marginBottom: 6 }}>
-                  <div style={{ fontSize: 13, color: "#1e3a5f", lineHeight: 1.5 }}>{ins.t}</div>
-                  <div style={{ fontSize: 10, color: C.b, fontWeight: 600, marginTop: 4 }}>{ins.d}</div>
+                <div key={i} style={{ background: C.bBg, border: `1px solid ${C.bBd}`, borderRadius: "var(--rad-lg)", padding: "var(--sp-lg)", marginBottom: "var(--sp-md)" }}>
+                  <div style={{ fontSize: "var(--fs-sm)", color: "#1e3a5f", lineHeight: 1.5 }}>{ins.t}</div>
+                  <div style={{ fontSize: "var(--fs-xs)", color: C.b, fontWeight: 600, marginTop: "var(--sp-md)" }}>{ins.d}</div>
                 </div>
               ))}
             </div>
