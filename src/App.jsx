@@ -3,14 +3,14 @@ import "./index.css";
 
 /* ─── Design tokens ─── */
 const C = {
-  bg: "#f4f3ef", card: "#fff", dark: "#141414", mid: "#374151",
-  muted: "#6b7280", light: "#9ca3af", line: "#e5e7eb", faint: "#f9fafb",
-  g: "#16a34a", gBg: "#dcfce7", gBd: "#86efac",
-  a: "#d97706", aBg: "#fef3c7", aBd: "#fcd34d",
-  r: "#dc2626", rBg: "#fee2e2", rBd: "#fca5a5",
-  b: "#2563eb", bBg: "#eff6ff", bBd: "#93c5fd",
-  p: "#7c3aed", pBg: "#f5f3ff", pBd: "#c4b5fd",
-  t: "#0d9488", tBg: "#f0fdfa",
+  bg: "#070b16", card: "rgba(255,255,255,0.08)", dark: "#f8fafc", mid: "#cbd5e1",
+  muted: "#94a3b8", light: "#64748b", line: "rgba(148,163,184,0.24)", faint: "rgba(255,255,255,0.05)",
+  g: "#2dd4bf", gBg: "rgba(45,212,191,0.16)", gBd: "rgba(45,212,191,0.3)",
+  a: "#facc15", aBg: "rgba(250,204,21,0.18)", aBd: "rgba(250,204,21,0.3)",
+  r: "#fb7185", rBg: "rgba(251,113,133,0.18)", rBd: "rgba(251,113,133,0.28)",
+  b: "#60a5fa", bBg: "rgba(96,165,250,0.16)", bBd: "rgba(96,165,250,0.28)",
+  p: "#c084fc", pBg: "rgba(192,132,252,0.18)", pBd: "rgba(192,132,252,0.28)",
+  t: "#22d3ee", tBg: "rgba(34,211,238,0.16)",
 };
 const RAG = {
   green: { c: C.g, bg: C.gBg, bd: C.gBd, l: "On Track" },
@@ -18,6 +18,12 @@ const RAG = {
   red: { c: C.r, bg: C.rBg, bd: C.rBd, l: "At Risk" },
   pending: { c: C.light, bg: C.faint, bd: C.line, l: "Pending" },
 };
+const OVERVIEW_STATS = [
+  { label: "Scholar Retention", value: "97%", note: "Above target", status: "green" },
+  { label: "Cost Per Youth", value: "$30.6", note: "Budget pressure remains", status: "amber" },
+  { label: "School Coverage", value: "100%", note: "All 825 active", status: "green" },
+  { label: "Culture Score", value: "93%", note: "Mentor culture strong", status: "amber" },
+];
 
 /* ─── Shared UI ─── */
 function Badge({ s, small }) {
@@ -45,6 +51,41 @@ function MetricCard({ m }) {
       {m.pct > 0 && <Bar pct={m.pct} s={m.status} />}
       <div style={{ fontSize: "var(--fs-xs)", color: C.muted, marginTop: "var(--sp-md)", lineHeight: 1.5 }} className="metric-note">{m.note}</div>
       {m.source && <div style={{ fontSize: "var(--fs-xs)", color: C.b, marginTop: "var(--sp-sm)", fontWeight: 600 }} className="metric-source">Source: {m.source}</div>}
+    </div>
+  );
+}
+function RingGauge({ pct, title, value, note }) {
+  const circumference = 327;
+  const offset = circumference - (circumference * Math.min(Math.max(pct, 0), 100)) / 100;
+  return (
+    <div className="ring-card">
+      <div className="ring-visual">
+        <svg viewBox="0 0 120 120" className="ring-svg">
+          <circle className="ring-track" cx="60" cy="60" r="52" />
+          <circle className="ring-fill" cx="60" cy="60" r="52" style={{ strokeDashoffset: offset }} />
+        </svg>
+        <div className="ring-center">
+          <span>{pct}%</span>
+          <small>Health</small>
+        </div>
+      </div>
+      <div className="ring-meta">
+        <div className="ring-title">{title}</div>
+        <div className="ring-value">{value}</div>
+        <div className="ring-note">{note}</div>
+      </div>
+    </div>
+  );
+}
+function StatCard({ label, value, note, status }) {
+  return (
+    <div className="stat-card">
+      <div className="stat-card-head">
+        <span>{label}</span>
+        <Badge s={status} small />
+      </div>
+      <div className="stat-card-value">{value}</div>
+      <div className="stat-card-note">{note}</div>
     </div>
   );
 }
@@ -299,7 +340,7 @@ export default function App() {
     <div style={{ fontFamily: "'DM Sans', 'Segoe UI', system-ui, sans-serif", background: C.bg, minHeight: "100vh", color: C.dark }} className="dashboard-wrapper">
 
       {/* Header */}
-      <div style={{ background: C.dark, display: "flex", justifyContent: "space-between", alignItems: "center" }} className="dashboard-header">
+      <div style={{ background: C.card, display: "flex", justifyContent: "space-between", alignItems: "center" }} className="dashboard-header">
         <div>
           <div className="header-title-label">Educate! EXP</div>
           <div className="header-title-main">Product Dashboard · 2026</div>
@@ -324,6 +365,22 @@ export default function App() {
         <div className="status-item">
           <span style={{ color: C.muted, fontStyle: "italic" }}>No integration decisions pending</span>
         </div>
+      </div>
+
+      <div className="health-hero">
+        <div className="health-hero-left">
+          <div className="hero-panel">
+            <div className="hero-panel-label">Product Health Snapshot</div>
+            <div className="hero-panel-title">Strategic health at a glance</div>
+            <div className="hero-panel-copy">A clear view of delivery fidelity, mentor value, cost efficiency, culture, and PMF trends. The current signal is strong, with immediate attention needed on cost structure and mentor exchange.</div>
+          </div>
+          <div className="hero-summary-grid">
+            {OVERVIEW_STATS.map((stat, i) => (
+              <StatCard key={i} label={stat.label} value={stat.value} note={stat.note} status={stat.status} />
+            ))}
+          </div>
+        </div>
+        <RingGauge pct={90} title="Overall product health" value="Strong" note="5 dimensions monitored" />
       </div>
 
       {/* Tabs */}
